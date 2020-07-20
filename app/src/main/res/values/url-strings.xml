@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="baseURL">http://192.168.137.1:8011</string>
+</resources>
