@@ -5,7 +5,7 @@ package com.delia.core.util;
 
 import android.util.Log;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.BuildConfig;
 
 /**
@@ -15,7 +15,7 @@ import com.delia.core.BuildConfig;
  */
 public class LogUtil {
 
-    private static final String DEFAULT_TAG = BaseApplication.getApplication().getPackageName();
+    private static final String DEFAULT_TAG = CoreApplication.getApplication().getPackageName();
 
     private static LogUtil instance;
 

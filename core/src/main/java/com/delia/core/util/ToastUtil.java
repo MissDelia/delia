@@ -2,7 +2,7 @@ package com.delia.core.util;
 
 import android.widget.Toast;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.widget.ToastTextView;
 
 /**
@@ -21,7 +21,7 @@ public class ToastUtil {
             myToast = new ToastUtil();
         }
         if (mToast == null) {
-            mToast = new Toast(BaseApplication.getApplication());
+            mToast = new Toast(CoreApplication.getApplication());
             mToast.setDuration(Toast.LENGTH_LONG);
         }
 
@@ -53,7 +53,7 @@ public class ToastUtil {
 
     private void setAttribute(String text, int gravity, int xOffset, int yOffset) {
         if (this.tv_content == null) {
-            this.tv_content = new ToastTextView(BaseApplication.getApplication());
+            this.tv_content = new ToastTextView(CoreApplication.getApplication());
         }
 
         this.tv_content.setText(text);

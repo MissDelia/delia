@@ -3,7 +3,7 @@ package com.jmx.standard;
 import android.app.Application;
 import android.os.Environment;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.handler.AppCrashHandler;
 import com.delia.core.util.LogUtil;
 
@@ -13,7 +13,7 @@ import com.delia.core.util.LogUtil;
  * 若2020年7月20日仍未删除此类，请勿使用
  * @author xiong'MissDelia'zhengkun
  */
-public class MyApplication extends BaseApplication {
+public class MyApplication extends CoreApplication {
 
     @Override
     public void onCreate() {

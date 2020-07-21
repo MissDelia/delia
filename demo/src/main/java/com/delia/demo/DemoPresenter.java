@@ -3,7 +3,7 @@
  */
 package com.delia.demo;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.base.BasePresenter;
 import com.delia.core.base.Repository;
 import com.delia.core.net.callback.OnRequestCompleteListener;
@@ -24,7 +24,7 @@ public class DemoPresenter extends BasePresenter<IDemoView> {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("obj", "213");
         // 这里一定要将Disposable交给mDisposable来进行管理，否则可能会导致内存泄露
-        mDisposable.add(Repository.getInstance().getDataFromNetwork(BaseApplication.getApplication().getString(R.string.demoApi)
+        mDisposable.add(Repository.getInstance().getDataFromNetwork(CoreApplication.getApplication().getString(R.string.demoApi)
                 , map, new OnRequestCompleteListener() {
             @Override
             public void onComplete(Response<?> response) {

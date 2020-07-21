@@ -13,7 +13,7 @@ import com.delia.core.handler.AppCrashHandler;
  * 2020年7月15日13:40:57
  * Application的基类
  */
-public abstract class BaseApplication extends Application {
+public abstract class CoreApplication extends Application {
 
     // 全局Application实例
     private static Application application;

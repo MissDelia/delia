@@ -3,7 +3,7 @@ package com.delia.core.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.exception.SharedInitialException;
 
 import java.lang.reflect.Constructor;
@@ -29,7 +29,7 @@ public class SharedPreUtil {
     }
 
     private SharedPreUtil() {
-        mPreferences = BaseApplication.getApplication().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        mPreferences = CoreApplication.getApplication().getSharedPreferences(TAG, Context.MODE_PRIVATE);
     }
 
     /**

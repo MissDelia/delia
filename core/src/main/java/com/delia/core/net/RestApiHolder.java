@@ -3,7 +3,7 @@
  */
 package com.delia.core.net;
 
-import com.delia.core.BaseApplication;
+import com.delia.core.CoreApplication;
 import com.delia.core.base.Repository;
 
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ public final class RestApiHolder {
         private synchronized static Retrofit getRetrofitClient() {
             if (RETROFIT_CLIENT == null) {
                 RETROFIT_CLIENT=new Retrofit.Builder()
-                        .baseUrl(BaseApplication.getBaseUrl())
+                        .baseUrl(CoreApplication.getBaseUrl())
                         .client(OKHttpHolder.getOkHttpClient())
                         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                         .addConverterFactory(GsonConverterFactory.create())
@@ -47,7 +47,7 @@ public final class RestApiHolder {
         private synchronized static OkHttpClient getOkHttpClient() {
             if (OK_HTTP_CLIENT == null) {
                 OK_HTTP_CLIENT = new OkHttpClient.Builder()
-                        .connectTimeout(BaseApplication.getTimeOut(), TimeUnit.SECONDS)
+                        .connectTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
                         .addInterceptor(Repository.interceptor)
                         .build();
             }

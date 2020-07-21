@@ -1,6 +1,10 @@
 # 框架说明
 [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)<br>
+
+一个基于MVP架构，集成了RxJava3、Retrofit、Glide等工具的组件化Android开发框架
+
+## 项目说明
 1、框架架构图请参考[App架构图](App架构图.png)<br>
 2、MVP请参考demo模块中的代码<br>
 3、沉浸式状态栏请参考demo模块中DemoActivity.onCreate方法<br>
