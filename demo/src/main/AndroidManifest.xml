@@ -1,7 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jmx.demo">
+    package="com.delia.demo">
 
-    <application>
-        <activity android:name=".DemoActivity" />
-    </application>
+    /
 </manifest>

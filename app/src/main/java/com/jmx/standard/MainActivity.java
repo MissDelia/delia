@@ -2,7 +2,7 @@ package com.jmx.standard;
 
 import android.os.Bundle;
 
-import com.jmx.library.base.BaseCompatActivity;
+import com.delia.core.base.BaseCompatActivity;
 
 public class MainActivity extends BaseCompatActivity {
 
