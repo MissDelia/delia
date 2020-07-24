@@ -5,6 +5,7 @@ package com.delia.core;
 
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
 import com.delia.core.exception.ApplicationInitialException;
 import com.delia.core.handler.AppCrashHandler;
 
@@ -30,6 +31,7 @@ public abstract class CoreApplication extends Application {
         application = createApplication();
         BASE_URL = createBaseUrl();
         setTimeout(30);
+        Utils.init(this);
     }
 
     protected abstract Application createApplication();

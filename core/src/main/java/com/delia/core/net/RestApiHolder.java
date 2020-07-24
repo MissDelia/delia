@@ -3,6 +3,8 @@
  */
 package com.delia.core.net;
 
+import android.os.AsyncTask;
+
 import com.delia.core.CoreApplication;
 import com.delia.core.base.Repository;
 
@@ -68,6 +70,19 @@ public final class RestApiHolder {
                 REST_SERVICE = RetrofitHolder.getRetrofitClient().create(RestService.class);
             }
             return REST_SERVICE;
+        }
+    }
+
+    class MyTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return null;
         }
     }
 

@@ -11,6 +11,9 @@ import com.delia.core.net.data.Response;
 import com.delia.core.util.LogUtil;
 import com.delia.core.util.SharedPreUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
@@ -71,22 +74,20 @@ public class Repository {
      * @param listener 回调监听
      * @return 返回Disposable，用于取消Retrofit订阅的事件
      */
-    public Disposable getDataFromNetwork(String url, Map<String, Object> params, OnRequestCompleteListener listener) {
+    public <T> Disposable getDataFromNetwork(String url, Map<String, Object> params, OnRequestCompleteListener<T> listener)
+            throws JsonParseException {
         if (params == null) {
             return RestApiHolder.getRestService().get(url, null)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
                         LogUtil.getInstance().d(jsonObject + "");
-                        Response<?> bean = new Gson().fromJson(jsonObject
-                                , new TypeToken<Response<?>>(){}.getType());
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
                         LogUtil.getInstance().e(e.getMessage() + "");
-                        Response<?> bean = new Response<>();
-                        bean.setCode(-1);
-                        bean.setMessage("onError:" + e.getMessage());
-                        listener.onComplete(bean);
+                        listener.onError(e.getMessage());
                     });
         } else {
             return RestApiHolder.getRestService().post(url, params)
@@ -94,15 +95,12 @@ public class Repository {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
                         LogUtil.getInstance().d(jsonObject + "");
-                        Response<?> bean = new Gson().fromJson(jsonObject
-                                , new TypeToken<Response<?>>(){}.getType());
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
                         LogUtil.getInstance().e(e.getMessage() + "");
-                        Response<?> bean = new Response<>();
-                        bean.setCode(-1);
-                        bean.setMessage("onError:" + e.getMessage());
-                        listener.onComplete(bean);
+                        listener.onError(e.getMessage());
                     });
         }
     }
@@ -110,8 +108,9 @@ public class Repository {
     /**
      * 此方法和{@link #setDataIntoShared}方法将SharedPreUtil中的方法映射到Repository中
      * 交给上层调用，上层暂时禁止直接使用SharedPreUtil中的方法
+     * 1、由于无法抽象所有基本数据类型且不暴露给其它类型，我直接根据基本数据类型重载了总共八个方法
      */
-    public <T> T getDataFromShared(String key, T def) {
+    public <T extends Number> T getDataFromShared(String key, T def) {
         try {
             return SharedPreUtil.getInstance().getValue(key, def);
         } catch (SharedInitialException e) {
@@ -120,7 +119,58 @@ public class Repository {
         return def;
     }
 
-    public <T> void setDataIntoShared(String key, T value) {
+    public <T extends CharSequence> T getDataFromShared(String key, T def) {
+        try {
+            return SharedPreUtil.getInstance().getValue(key, def);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+        return def;
+    }
+
+    public <T extends Character> T getDataFromShared(String key, T def) {
+        try {
+            return SharedPreUtil.getInstance().getValue(key, def);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+        return def;
+    }
+
+    public <T extends Boolean> T getDataFromShared(String key, T def) {
+        try {
+            return SharedPreUtil.getInstance().getValue(key, def);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+        return def;
+    }
+
+    public <T extends Number> void setDataIntoShared(String key, T value) {
+        try {
+            SharedPreUtil.getInstance().setValue(key, value);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T extends CharSequence> void setDataIntoShared(String key, T value) {
+        try {
+            SharedPreUtil.getInstance().setValue(key, value);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T extends Character> void setDataIntoShared(String key, T value) {
+        try {
+            SharedPreUtil.getInstance().setValue(key, value);
+        } catch (SharedInitialException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public <T extends Boolean> void setDataIntoShared(String key, T value) {
         try {
             SharedPreUtil.getInstance().setValue(key, value);
         } catch (SharedInitialException e) {

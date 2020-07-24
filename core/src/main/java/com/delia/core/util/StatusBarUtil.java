@@ -3,14 +3,14 @@
  */
 package com.delia.core.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * 状态栏浅色模式，根据沉浸式状态栏时实际的背景色使用此类
@@ -47,6 +47,29 @@ public class StatusBarUtil {
 				window.addFlags(0x80000000);
 				window.getDecorView().setSystemUiVisibility(
 						View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | 0x00002000);
+				result = 3;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 设置状态栏黑色字体图标， 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
+	 *
+	 * @param activity
+	 * @return 1:MIUI 2:Flyme 3:android6.0
+	 */
+	public int statusBarDarkMode(Activity activity) {
+		int result = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (Build.VERSION.SDK_INT < 23 && MIUISetStatusBarLightMode(activity.getWindow(), false)) {
+				result = 1;
+			} else if (FlymeSetStatusBarLightMode(activity.getWindow(), false)) {
+				result = 2;
+			} else if (Build.VERSION.SDK_INT >= 23) {
+				Window window = activity.getWindow();
+				window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 				result = 3;
 			}
 		}

@@ -38,6 +38,10 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         mDisposable.clear();
     }
 
+    protected void intToolBar(int toolBarId, int toolLayoutId, boolean isBack, boolean isBiggerBackIcon, boolean isTool) {
+
+    }
+
     /**
      * 沉浸式状态栏
      */

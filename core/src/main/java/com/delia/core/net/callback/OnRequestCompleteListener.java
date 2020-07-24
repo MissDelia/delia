@@ -10,7 +10,9 @@ import com.delia.core.net.data.Response;
  * @author xiong'MissDelia'zhengkun
  * 2020/7/16 15:56
  */
-public interface OnRequestCompleteListener {
+public interface OnRequestCompleteListener<T>  {
 
-    void onComplete(Response<?> response);
+    void onComplete(T response);
+
+    void onError(String message);
 }

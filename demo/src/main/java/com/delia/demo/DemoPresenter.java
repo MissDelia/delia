@@ -21,11 +21,11 @@ import java.util.Map;
 public class DemoPresenter extends BasePresenter<IDemoView> {
 
     public void request() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("obj", "213");
         // 这里一定要将Disposable交给mDisposable来进行管理，否则可能会导致内存泄露
         mDisposable.add(Repository.getInstance().getDataFromNetwork(CoreApplication.getApplication().getString(R.string.demoApi)
-                , map, new OnRequestCompleteListener() {
+                , map, new OnRequestCompleteListener<Response<?>>() {
             @Override
             public void onComplete(Response<?> response) {
                 if (response.getCode() == 200) {
@@ -34,6 +34,12 @@ public class DemoPresenter extends BasePresenter<IDemoView> {
                     getView().isRequestSuccess(false);
                 }
             }
+
+            @Override
+            public void onError(String message) {
+                getView().isRequestSuccess(false);
+            }
         }));
+        int code = Repository.getInstance().getDataFromShared("code", 123);
     }
 }
