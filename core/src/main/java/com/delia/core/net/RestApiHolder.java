@@ -3,9 +3,8 @@
  */
 package com.delia.core.net;
 
-import android.os.AsyncTask;
-
 import com.delia.core.CoreApplication;
+import com.delia.core.R;
 import com.delia.core.base.Repository;
 
 import java.util.concurrent.TimeUnit;
@@ -26,6 +25,8 @@ public final class RestApiHolder {
 
         private static Retrofit RETROFIT_CLIENT;
 
+        private static Retrofit CITY_RETROFIT_CLIENT;
+
         private synchronized static Retrofit getRetrofitClient() {
             if (RETROFIT_CLIENT == null) {
                 RETROFIT_CLIENT=new Retrofit.Builder()
@@ -36,6 +37,18 @@ public final class RestApiHolder {
                         .build();
             }
             return RETROFIT_CLIENT;
+        }
+
+        private synchronized static Retrofit getCityRetrofitClient() {
+            if (CITY_RETROFIT_CLIENT == null) {
+                CITY_RETROFIT_CLIENT = new Retrofit.Builder()
+                        .baseUrl(CoreApplication.getApplication().getString(R.string.city_base))
+                        .client(OKHttpHolder.getOkHttpClient())
+                        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+            }
+            return CITY_RETROFIT_CLIENT;
         }
     }
 
@@ -50,7 +63,7 @@ public final class RestApiHolder {
             if (OK_HTTP_CLIENT == null) {
                 OK_HTTP_CLIENT = new OkHttpClient.Builder()
                         .connectTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
-                        .addInterceptor(Repository.interceptor)
+                        .addInterceptor(Repository.getInterceptor())
                         .build();
             }
             return OK_HTTP_CLIENT;
@@ -65,24 +78,20 @@ public final class RestApiHolder {
     private static final class RestServiceHolder{
         private static RestService REST_SERVICE;
 
+        private static RestCityService CITY_REST_SERVICE;
+
         private synchronized static RestService getRestService() {
             if (REST_SERVICE == null) {
                 REST_SERVICE = RetrofitHolder.getRetrofitClient().create(RestService.class);
             }
             return REST_SERVICE;
         }
-    }
 
-    class MyTask extends AsyncTask<String, Integer, String> {
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
+        private synchronized static RestCityService getCityRestService() {
+            if (CITY_REST_SERVICE == null) {
+                CITY_REST_SERVICE = RetrofitHolder.getCityRetrofitClient().create(RestCityService.class);
+            }
+            return CITY_REST_SERVICE;
         }
     }
 
@@ -92,6 +101,15 @@ public final class RestApiHolder {
     public static RestService getRestService() {
 
         return RestServiceHolder.getRestService();
+
+    }
+
+    /**
+     * 获取RestService实例
+     */
+    public static RestCityService getCityRestService() {
+
+        return RestServiceHolder.getCityRestService();
 
     }
 }

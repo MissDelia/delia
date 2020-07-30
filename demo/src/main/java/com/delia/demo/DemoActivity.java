@@ -22,20 +22,28 @@ public class DemoActivity extends BaseViewActivity<IDemoView, DemoPresenter>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo);
+    }
+
+    @Override
+    protected void loadData() {
+        getPresenter().request();
+    }
+
+    @Override
+    protected void initView() {
         // 设置沉浸式状态栏
         useImmersiveBar();
         // 沉浸时设置状态栏字体为深色
         StatusBarUtil.getInstance().statusBarLightMode(this);
-        getPresenter().request();
-
-        initView();
-    }
-
-    private void initView() {
         ImageView iv = findViewById(R.id.iv_bar_back);
         Glide.with(this)
                 .load(R.mipmap.icon_back_white)
                 .into(iv);
+    }
+
+    @Override
+    protected void attachData() {
+
     }
 
     @Override

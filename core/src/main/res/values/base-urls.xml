@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="city_base">http://www.weather.com.cn/data/city3jdata/</string>
+
+    <string name="province">china.html</string>
+    <string name="city">provshi/%s.html</string>
+    <string name="area">station/%s.html</string>
+</resources>

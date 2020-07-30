@@ -36,27 +36,34 @@ public class Repository {
 
     private static Repository instance;
 
-    public static HttpLoggingInterceptor interceptor;
+    private static HttpLoggingInterceptor interceptor;
 
     private Repository() {
-        interceptor = new HttpLoggingInterceptor(message -> {
-            try {
-                if (BuildConfig.DEBUG) {
-                    LogUtil.getInstance().i(message);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        //包含header、body数据
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
     }
 
-    public static Repository getInstance() {
+    public synchronized static Repository getInstance() {
         if (instance == null) {
             instance = new Repository();
         }
         return instance;
+    }
+
+    public synchronized static HttpLoggingInterceptor getInterceptor() {
+        if (interceptor == null) {
+            interceptor = new HttpLoggingInterceptor(message -> {
+                try {
+                    if (BuildConfig.DEBUG) {
+                        LogUtil.getInstance(4).i(message);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            //包含header、body数据
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }
+        return interceptor;
     }
 
     /**
@@ -81,12 +88,12 @@ public class Repository {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
-                        LogUtil.getInstance().d(jsonObject + "");
+                        LogUtil.getInstance(4).d(jsonObject + "");
                         T bean = new Gson().fromJson(jsonObject
                                 , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
-                        LogUtil.getInstance().e(e.getMessage() + "");
+                        LogUtil.getInstance(4).e(e.getMessage() + "");
                         listener.onError(e.getMessage());
                     });
         } else {
@@ -94,12 +101,12 @@ public class Repository {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
-                        LogUtil.getInstance().d(jsonObject + "");
+                        LogUtil.getInstance(4).d(jsonObject + "");
                         T bean = new Gson().fromJson(jsonObject
                                 , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
-                        LogUtil.getInstance().e(e.getMessage() + "");
+                        LogUtil.getInstance(4).e(e.getMessage() + "");
                         listener.onError(e.getMessage());
                     });
         }

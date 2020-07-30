@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_bar_iv_describe">返回按钮</string>
+    <string name="title_bar_default_str">空白页</string>
+
+
 </resources>
