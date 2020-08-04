@@ -19,7 +19,7 @@ public class LogUtil {
 
     private static LogUtil instance;
 
-    private static int stackLevel = 3;
+    private static int stackLevel = 4;
 
     /**
      * 如果LogUtil默认栈深度不正确，可以使用此方法调整栈深度，
@@ -38,7 +38,7 @@ public class LogUtil {
         if (instance == null) {
             instance = new LogUtil();
         }
-        stackLevel = 3;
+        stackLevel = 4;
         return instance;
     }
 

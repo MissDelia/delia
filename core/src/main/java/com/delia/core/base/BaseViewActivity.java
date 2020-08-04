@@ -18,7 +18,6 @@ public abstract class BaseViewActivity<V extends BaseView, P extends  BasePresen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         if (presenter == null) {
             presenter = createPresenter();
         }
@@ -28,6 +27,7 @@ public abstract class BaseViewActivity<V extends BaseView, P extends  BasePresen
         if (presenter != null && view != null) {
             presenter.bindView(view);
         }
+        super.onCreate(savedInstanceState);
     }
 
     @Override

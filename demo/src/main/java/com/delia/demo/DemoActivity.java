@@ -19,9 +19,8 @@ public class DemoActivity extends BaseViewActivity<IDemoView, DemoPresenter>
         implements IDemoView {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
+    protected int getViewId() {
+        return R.layout.activity_demo;
     }
 
     @Override

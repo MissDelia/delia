@@ -56,7 +56,7 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
         // 这里运行通用处理方法
         LogUtil.getInstance().e(TAG, String.format(Locale.getDefault()
                 , "出错的线程ID：%d，以下是异常堆栈信息：", t.getId()));
-        e.getStackTrace();
+        e.printStackTrace();
         // 这里运行上层提供的异常处理方法
         if (mListenerArray != null) {
             for (OnAppCrashListener mListener : mListenerArray) {

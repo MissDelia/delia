@@ -48,8 +48,8 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getViewId());
         mDisposable = new CompositeDisposable();
-        loadData();
         initView();
+        loadData();
     }
 
     @Override
