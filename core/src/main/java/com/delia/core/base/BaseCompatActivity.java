@@ -64,6 +64,18 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         mDisposable.clear();
     }
 
+    protected void initToolBar(int toolBarId) {
+        initToolBar(toolBarId, false, false, false);
+    }
+
+    protected void initToolBar(int toolBarId, boolean isBack) {
+        initToolBar(toolBarId, isBack, false, false);
+    }
+
+    protected void initToolBar(int toolBarId, boolean isBack, boolean isTool) {
+        initToolBar(toolBarId, isBack, false, isTool);
+    }
+
     /**
      * 标题栏组件初始化
      * @param toolBarId include后定义的ID
@@ -205,17 +217,41 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
 
     /**
      * 跳转UI页面
-     * @param c 下一个UI类
-     * @param extras 传递参数
+     * @param c 目标页面对应的Class
      */
-    protected void goIntent(Class<? extends Activity> c, Bundle extras){
-        Intent intent = new Intent(this, c);
-        if (extras != null) intent.putExtras(extras);
-        startActivity(intent);
+    protected void goIntent(Class<? extends Activity> c) {
+        goIntent(c, null, -1);
     }
 
-    protected void goIntent(Class<? extends Activity> c) {
-        goIntent(c, null);
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     * @param extras 要传的值
+     */
+    protected void goIntent(Class<? extends Activity> c, Bundle extras){
+        goIntent(c, extras, -1);
+    }
+
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     * @param flags 跳转的flags
+     */
+    protected void goIntent(Class<? extends Activity> c, int flags){
+        goIntent(c, null, flags);
+    }
+
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     * @param extras 要传的值
+     * @param flags 跳转的flags
+     */
+    protected void goIntent(Class<? extends Activity> c, Bundle extras, int flags) {
+        Intent intent = new Intent(this, c);
+        if (extras != null) intent.putExtras(extras);
+        if (flags != -1) intent.addFlags(flags);
+        startActivity(intent);
     }
 
 }

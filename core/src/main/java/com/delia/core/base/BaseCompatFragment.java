@@ -63,6 +63,7 @@ public abstract class BaseCompatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView();
     }
 
     @Override
@@ -81,6 +82,18 @@ public abstract class BaseCompatFragment extends Fragment {
         if (mDisposable.size() > 0) {
             mDisposable.clear();
         }
+    }
+
+    protected void initToolBar(int toolBarId) {
+        initToolBar(toolBarId, false, false, false);
+    }
+
+    protected void initToolBar(int toolBarId, boolean isBack) {
+        initToolBar(toolBarId, isBack, false, false);
+    }
+
+    protected void initToolBar(int toolBarId, boolean isBack, boolean isTool) {
+        initToolBar(toolBarId, isBack, false, isTool);
     }
 
     /**
@@ -226,19 +239,43 @@ public abstract class BaseCompatFragment extends Fragment {
         ToastUtil.getInstance().showCommon(msg);
     }
 
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     */
+    protected void goIntent(Class<? extends Activity> c) {
+        goIntent(c, null, -1);
+    }
 
     /**
      * 跳转UI页面
-     * @param c 下一个UI类
-     * @param extras 传递参数
+     * @param c 目标页面对应的Class
+     * @param extras 要传的值
      */
     protected void goIntent(Class<? extends Activity> c, Bundle extras){
+        goIntent(c, extras, -1);
+    }
+
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     * @param flags 跳转的flags
+     */
+    protected void goIntent(Class<? extends Activity> c, int flags){
+        goIntent(c, null, flags);
+    }
+
+    /**
+     * 跳转UI页面
+     * @param c 目标页面对应的Class
+     * @param extras 要传的值
+     * @param flags 跳转的flags
+     */
+    protected void goIntent(Class<? extends Activity> c, Bundle extras, int flags) {
         Intent intent = new Intent(getActivity(), c);
         if (extras != null) intent.putExtras(extras);
+        if (flags != -1) intent.addFlags(flags);
         startActivity(intent);
     }
 
-    protected void goIntent(Class<? extends Activity> c) {
-        goIntent(c, null);
-    }
 }
