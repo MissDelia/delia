@@ -2,7 +2,9 @@
 <resources>
     <color name="default_white">#FFFFFFFF</color>
     <color name="default_gray">#FFEEEEEE</color>
+    <color name="default_gray_text">#FF999999</color>
     <color name="default_black">#FF333333</color>
     <color name="default_black_transparent">#E6000000</color>
     <color name="default_sheet_blue">#FF037BFF</color>
+    <color name="default_golden_color">#FFCC9933</color>
 </resources>

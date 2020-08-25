@@ -5,7 +5,9 @@ package com.delia.core.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import com.delia.core.R;
 import com.delia.core.util.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
@@ -33,6 +36,27 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
  * 2020年7月16日15:32:45
  */
 public abstract class BaseCompatFragment extends Fragment {
+
+    /**
+     * 对于定义的整形常量推荐使用十六进制
+     * 默认的startActivityForResult的requestCode
+     */
+    protected static final int DEFAULT_REQUEST_CODE = -0x00000001;
+
+    /**
+     * 默认的onActivityResult常量，表示成功返回数据
+     */
+    protected static final int RESPONSE_SUCCESS = 0x00000100;
+
+    /**
+     * 默认的onActivityResult常量，表示无返回数据或返回数据存在问题
+     */
+    protected static final int RESPONSE_FAULT = 0x00000200;
+
+    /**
+     * 默认无效的flag
+     */
+    protected static final int DEFAULT_FLAGS = -0x00000001;
 
     protected CompositeDisposable mDisposable;
 
@@ -45,6 +69,8 @@ public abstract class BaseCompatFragment extends Fragment {
     protected View btnBack;
 
     protected ImageView ivBack;
+
+    protected LinearLayout llBarTitle;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,10 +151,8 @@ public abstract class BaseCompatFragment extends Fragment {
                 });
                 btnBack.setVisibility(View.VISIBLE);
             }
-            LinearLayout llBarTitle = findViewById(R.id.ll_bar_title);
-            ViewGroup.LayoutParams layoutParams
-                    = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            llBarTitle.addView(getBarCenterView(), layoutParams);
+            llBarTitle = findViewById(R.id.ll_bar_title);
+            llBarTitle.addView(getBarCenterView(), getLayoutParams());
             if (isTool) {
                 tools = findViewById(R.id.ll_bar_tool);
                 tools.setVisibility(View.VISIBLE);
@@ -182,6 +206,22 @@ public abstract class BaseCompatFragment extends Fragment {
 
     protected Drawable getBarBackground() {
         return getResources().getDrawable(R.drawable.drawable_default_bar);
+    }
+
+    protected ViewGroup.LayoutParams getLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    protected boolean checkPermissions(String[] permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (String permission : permissions) {
+                if (Objects.requireNonNull(getActivity()).checkSelfPermission(permission)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -244,7 +284,7 @@ public abstract class BaseCompatFragment extends Fragment {
      * @param c 目标页面对应的Class
      */
     protected void goIntent(Class<? extends Activity> c) {
-        goIntent(c, null, -1);
+        goIntent(c, null, DEFAULT_FLAGS, DEFAULT_REQUEST_CODE);
     }
 
     /**
@@ -253,7 +293,7 @@ public abstract class BaseCompatFragment extends Fragment {
      * @param extras 要传的值
      */
     protected void goIntent(Class<? extends Activity> c, Bundle extras){
-        goIntent(c, extras, -1);
+        goIntent(c, extras, DEFAULT_FLAGS, DEFAULT_REQUEST_CODE);
     }
 
     /**
@@ -262,7 +302,7 @@ public abstract class BaseCompatFragment extends Fragment {
      * @param flags 跳转的flags
      */
     protected void goIntent(Class<? extends Activity> c, int flags){
-        goIntent(c, null, flags);
+        goIntent(c, null, flags, DEFAULT_REQUEST_CODE);
     }
 
     /**
@@ -271,11 +311,11 @@ public abstract class BaseCompatFragment extends Fragment {
      * @param extras 要传的值
      * @param flags 跳转的flags
      */
-    protected void goIntent(Class<? extends Activity> c, Bundle extras, int flags) {
+    protected void goIntent(Class<? extends Activity> c, Bundle extras, int flags, int requestCode) {
         Intent intent = new Intent(getActivity(), c);
         if (extras != null) intent.putExtras(extras);
-        if (flags != -1) intent.addFlags(flags);
-        startActivity(intent);
+        if (flags != DEFAULT_FLAGS) intent.addFlags(flags);
+        startActivityForResult(intent, requestCode);
     }
 
 }

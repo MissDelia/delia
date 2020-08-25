@@ -5,11 +5,8 @@ package com.delia.core.net;
 
 import com.google.gson.JsonObject;
 
-import java.util.Map;
-
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 /**

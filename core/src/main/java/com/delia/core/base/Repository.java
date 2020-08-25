@@ -7,13 +7,11 @@ import com.delia.core.BuildConfig;
 import com.delia.core.exception.SharedInitialException;
 import com.delia.core.net.RestApiHolder;
 import com.delia.core.net.callback.OnRequestCompleteListener;
-import com.delia.core.net.data.Response;
 import com.delia.core.util.LogUtil;
 import com.delia.core.util.SharedPreUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.Map;
@@ -21,6 +19,7 @@ import java.util.Map;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -54,7 +53,7 @@ public class Repository {
             interceptor = new HttpLoggingInterceptor(message -> {
                 try {
                     if (BuildConfig.DEBUG) {
-                        LogUtil.getInstance(4).i(message);
+                        LogUtil.getInstance().i(message);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -88,12 +87,12 @@ public class Repository {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
-                        LogUtil.getInstance(4).d(jsonObject + "");
+                        LogUtil.getInstance().d(jsonObject + "");
                         T bean = new Gson().fromJson(jsonObject
                                 , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
-                        LogUtil.getInstance(4).e(e.getMessage() + "");
+                        LogUtil.getInstance().e(e.getMessage() + "");
                         listener.onError(e.getMessage());
                     });
         } else {
@@ -101,12 +100,262 @@ public class Repository {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(jsonObject -> {
-                        LogUtil.getInstance(4).d(jsonObject + "");
+                        LogUtil.getInstance().d(jsonObject + "");
                         T bean = new Gson().fromJson(jsonObject
                                 , new TypeToken<T>(){}.getType());
                         listener.onComplete(bean);
                     }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public <T> Disposable getDataFromNetwork(String url, Map<String, Object> params, Map<String, Object> headers, OnRequestCompleteListener<T> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public <T> Disposable getDataFromNetwork(String url, RequestBody params, OnRequestCompleteListener<T> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public <T> Disposable getDataFromNetwork(String url, RequestBody params, Map<String, Object> headers, OnRequestCompleteListener<T> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        T bean = new Gson().fromJson(jsonObject
+                                , new TypeToken<T>(){}.getType());
+                        listener.onComplete(bean);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法（直接返回JsonObject）
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public Disposable getJsonFromNetwork(String url, Map<String, Object> params, OnRequestCompleteListener<JsonObject> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
                         LogUtil.getInstance(4).e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法（直接返回JsonObject）
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public Disposable getJsonFromNetwork(String url, Map<String, Object> params, Map<String, Object> headers, OnRequestCompleteListener<JsonObject> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance(4).e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法（直接返回JsonObject）
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public Disposable getJsonFromNetwork(String url, RequestBody params, OnRequestCompleteListener<JsonObject> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        }
+    }
+
+    /**
+     * 通用请求方法（直接返回JsonObject）
+     * @param url api地址
+     * @param params 请求参数
+     * @param listener 回调监听
+     * @return 返回Disposable，用于取消Retrofit订阅的事件
+     */
+    public Disposable getJsonFromNetwork(String url, RequestBody params, Map<String, Object> headers, OnRequestCompleteListener<JsonObject> listener)
+            throws JsonParseException {
+        if (params == null) {
+            return RestApiHolder.getRestService().get(url, null, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
+                        listener.onError(e.getMessage());
+                    });
+        } else {
+            return RestApiHolder.getRestService().post(url, params, headers)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(jsonObject -> {
+                        LogUtil.getInstance().d(jsonObject + "");
+                        listener.onComplete(jsonObject);
+                    }, e -> {
+                        LogUtil.getInstance().e(e.getMessage() + "");
                         listener.onError(e.getMessage());
                     });
         }

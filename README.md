@@ -45,3 +45,6 @@
 1、增加了一个简单的TextWatcher实现，简化代码逻辑；<br>
 2、增加了一个控制ViewPager速度的Scroller；<br>
 <br>
+2020年8月25日：<br>
+1、优化了Repository类，重载了一些重要方法，增加易用性；<br>
+2、重载了BaseFragment和BaseActivity的goIntent方法，扩展了startActivityForResult功能；<br>
