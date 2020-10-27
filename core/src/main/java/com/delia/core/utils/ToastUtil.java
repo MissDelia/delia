@@ -1,9 +1,11 @@
-package com.delia.core.util;
+package com.delia.core.utils;
 
 import android.widget.Toast;
 
 import com.delia.core.CoreApplication;
 import com.delia.core.widget.ToastTextView;
+
+import java.lang.ref.WeakReference;
 
 /**
  * @author xiong'MissDelia'zhengkun
@@ -13,26 +15,14 @@ import com.delia.core.widget.ToastTextView;
 public class ToastUtil {
 
     private static ToastUtil myToast;
-    private static Toast mToast;
-    private ToastTextView tv_content;
+    //    private ToastTextView tv_content;
 
     public static synchronized ToastUtil getInstance() {
         if (myToast == null) {
             myToast = new ToastUtil();
         }
-        if (mToast == null) {
-            mToast = new Toast(CoreApplication.getApplication());
-            mToast.setDuration(Toast.LENGTH_LONG);
-        }
 
         return myToast;
-    }
-
-    public void setTime(int length) {
-        if (mToast != null) {
-            mToast.setDuration(length);
-        }
-
     }
 
     public void showCommon(String text) {
@@ -51,15 +41,20 @@ public class ToastUtil {
         this.setAttribute(text, gravity, xOffset, yOffset);
     }
 
-    private void setAttribute(String text, int gravity, int xOffset, int yOffset) {
-        if (this.tv_content == null) {
-            this.tv_content = new ToastTextView(CoreApplication.getApplication());
-        }
+    /**
+     * 使用弱引用解决短时间内进行Toast时的提示语混乱问题
+     */
+    private synchronized void setAttribute(String text, int gravity, int xOffset, int yOffset) {
+//        if (this.tv_content == null) {
+//            this.tv_content = new ToastTextView(CoreApplication.getApplication());
+//        }
+        WeakReference<ToastTextView> mContent = new WeakReference<>(new ToastTextView(CoreApplication.getApplication()));
 
-        this.tv_content.setText(text);
-        mToast.setView(this.tv_content);
-        mToast.setGravity(gravity, xOffset, yOffset);
-        mToast.show();
+        mContent.get().setText(text);
+        Toast toast = Toast.makeText(CoreApplication.getApplication(), "", Toast.LENGTH_SHORT);
+        toast.setView(mContent.get());
+        toast.setGravity(gravity, xOffset, yOffset);
+        toast.show();
     }
 
 }

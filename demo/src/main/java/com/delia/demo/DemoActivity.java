@@ -3,12 +3,11 @@
  */
 package com.delia.demo;
 
-import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.delia.core.base.BaseViewActivity;
-import com.delia.core.util.StatusBarUtil;
+import com.delia.core.utils.StatusBarUtil;
 
 /**
  * MVP使用教程

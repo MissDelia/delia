@@ -9,6 +9,8 @@ import java.util.Map;
 
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -41,12 +43,7 @@ public interface RestService {
     @GET
     Observable<JsonObject> get(@Url String url, @QueryMap Map<String, Object> params, @HeaderMap Map<String, Object> headers);
 
-    @FormUrlEncoded
-    @POST
-    Observable<JsonObject> post(@Url String url, @FieldMap Map<String, Object> params, @HeaderMap Map<String, Object> headers);
-
     @Headers({"Content-type:application/json;charset=UTF-8"})
     @POST
-    Observable<JsonObject> post(@Url String url, @Body RequestBody body, @HeaderMap Map<String, Object> headers);
-
+    Observable<JsonObject> upload(@Url String url, @Body Map<String, Object> body);
 }

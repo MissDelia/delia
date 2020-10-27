@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
  * @author xiong'MissDelia'zhengkun
  * 2020年7月16日15:32:45
  */
-public abstract class BaseViewFragment<V extends BaseView, P extends BasePresenter<V>>
+public abstract class BaseViewFragment<V extends BaseView, P extends  BasePresenter<V>>
         extends BaseCompatFragment {
 
     private P presenter;

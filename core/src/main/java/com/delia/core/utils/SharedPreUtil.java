@@ -1,4 +1,4 @@
-package com.delia.core.util;
+package com.delia.core.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,7 +18,7 @@ public class SharedPreUtil {
     private static final String TAG = "JMX_SHARED";
 
     // 创建一个写入器
-    private SharedPreferences mPreferences;
+    private final SharedPreferences mPreferences;
     private static SharedPreUtil instance;
 
     public synchronized static SharedPreUtil getInstance() {

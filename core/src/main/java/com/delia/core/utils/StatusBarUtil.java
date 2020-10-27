@@ -1,13 +1,15 @@
 /*
  * 2016-2020 ©MissDelia 版权所有
  */
-package com.delia.core.util;
+package com.delia.core.utils;
 
 import android.app.Activity;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.blankj.utilcode.util.BarUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -29,12 +31,27 @@ public class StatusBarUtil {
 	}
 
 	/**
+	 * 设置状态栏黑色字体图标
+	 */
+	public void statusBarLightMode(Activity activity) {
+		BarUtils.setStatusBarLightMode(activity, true);
+	}
+
+	/**
+	 * 设置状态栏白字体图标
+	 */
+	public void statusBarDarkMode(Activity activity) {
+		BarUtils.setStatusBarLightMode(activity, false);
+	}
+
+	/**
 	 * 设置状态栏黑色字体图标， 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
 	 * 
-	 * @param activity
+	 * @param activity activity实例
 	 * @return 1:MIUI 2:Flyme 3:android6.0
 	 */
-	public int statusBarLightMode(Activity activity) {
+	@Deprecated
+	public int statusBarLightModeOld(Activity activity) {
 		int result = 0;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			if (Build.VERSION.SDK_INT < 23 && MIUISetStatusBarLightMode(activity.getWindow(), true)) {
@@ -56,10 +73,11 @@ public class StatusBarUtil {
 	/**
 	 * 设置状态栏黑色字体图标， 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
 	 *
-	 * @param activity
+	 * @param activity activity实例
 	 * @return 1:MIUI 2:Flyme 3:android6.0
 	 */
-	public int statusBarDarkMode(Activity activity) {
+	@Deprecated
+	public int statusBarDarkModeOld(Activity activity) {
 		int result = 0;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			if (Build.VERSION.SDK_INT < 23 && MIUISetStatusBarLightMode(activity.getWindow(), false)) {
@@ -79,7 +97,7 @@ public class StatusBarUtil {
 	/**
 	 * 已知系统类型时，设置状态栏黑色字体图标。 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android
 	 * 
-	 * @param activity
+	 * @param activity activity实例
 	 * @param type
 	 *            1:MIUUI 2:Flyme 3:android6.0
 	 */
@@ -139,7 +157,7 @@ public class StatusBarUtil {
 				window.setAttributes(lp);
 				result = true;
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		}
 		return result;
@@ -155,13 +173,13 @@ public class StatusBarUtil {
 	 * @return boolean 成功执行返回true
 	 *
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes", "PrivateApi" })
 	public boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
 		boolean result = false;
 		if (window != null) {
 			Class clazz = window.getClass();
 			try {
-				int darkModeFlag = 0;
+				int darkModeFlag;
 				Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
 				Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
 				darkModeFlag = field.getInt(layoutParams);
@@ -169,14 +187,12 @@ public class StatusBarUtil {
 				if (dark) {
 					extraFlagField.invoke(window, darkModeFlag, darkModeFlag);// 状态栏透明且黑色字体
 				} else {
-					extraFlagField.invoke(window, 0, darkModeFlag)
-
-					;// 清除黑色字体
+					extraFlagField.invoke(window, 0, darkModeFlag);// 清除黑色字体
 				}
 				result = true;
 
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 
 		}

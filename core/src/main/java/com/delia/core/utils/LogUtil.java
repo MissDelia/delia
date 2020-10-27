@@ -1,12 +1,12 @@
 /*
  * 2016-2020 ©MissDelia 版权所有
  */
-package com.delia.core.util;
+package com.delia.core.utils;
 
 import android.util.Log;
 
-import com.delia.core.CoreApplication;
 import com.delia.core.BuildConfig;
+import com.delia.core.CoreApplication;
 
 /**
  * 日志工具类

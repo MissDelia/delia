@@ -13,6 +13,36 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
  */
 public abstract class BasePresenter<V extends BaseView> {
 
+    /**
+     * 查询成功
+     */
+    public static final String RESPONSE_CODE_NORMAL = "0000";
+
+    /**
+     * 查询失败
+     */
+    public static final String RESPONSE_CODE_FAILURE = "0001";
+
+    /**
+     * 结果为空
+     */
+    public static final String RESPONSE_CODE_EMPTY = "0002";
+
+    /**
+     * 登录过期
+     */
+    public static final String RESPONSE_CODE_VALIDATE = "0003";
+
+    /**
+     * 登录超时
+     */
+    public static final String RESPONSE_CODE_TIMEOUT = "0004";
+
+    /**
+     * 异常
+     */
+    public static final String RESPONSE_CODE_EXCEPTION = "9999";
+
     private V baseView;
 
     protected CompositeDisposable mDisposable;

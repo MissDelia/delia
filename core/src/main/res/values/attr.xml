@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--LoadingView使用的标签-->
     <declare-styleable name="LoadingView">
         <attr name="refresh_time" format="integer" />
         <attr name="refresh_color" format="color"/>
+    </declare-styleable>
+
+    <!--自定义进度条控件的标签-->
+    <declare-styleable name="UltraProgressBar">
+        <!--进度条前景色-->
+        <attr name="foreground_color" format="color" />
+        <!--进度条背景色-->
+        <attr name="background_color" format="color" />
+        <!--进度条宽度-->
+        <attr name="bar_width" format="integer"/>
+        <!--进度条渲染垂直模式-->
+        <attr name="android:orientation" />
     </declare-styleable>
 </resources>

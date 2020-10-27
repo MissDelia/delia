@@ -4,11 +4,11 @@
 package com.delia.core.net;
 
 import com.delia.core.CoreApplication;
-import com.delia.core.R;
 import com.delia.core.base.Repository;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
@@ -25,8 +25,6 @@ public final class RestApiHolder {
 
         private static Retrofit RETROFIT_CLIENT;
 
-        private static Retrofit CITY_RETROFIT_CLIENT;
-
         private synchronized static Retrofit getRetrofitClient() {
             if (RETROFIT_CLIENT == null) {
                 RETROFIT_CLIENT=new Retrofit.Builder()
@@ -37,18 +35,6 @@ public final class RestApiHolder {
                         .build();
             }
             return RETROFIT_CLIENT;
-        }
-
-        private synchronized static Retrofit getCityRetrofitClient() {
-            if (CITY_RETROFIT_CLIENT == null) {
-                CITY_RETROFIT_CLIENT = new Retrofit.Builder()
-                        .baseUrl(CoreApplication.getApplication().getString(R.string.city_base))
-                        .client(OKHttpHolder.getOkHttpClient())
-                        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-            }
-            return CITY_RETROFIT_CLIENT;
         }
     }
 
@@ -61,9 +47,15 @@ public final class RestApiHolder {
 
         private synchronized static OkHttpClient getOkHttpClient() {
             if (OK_HTTP_CLIENT == null) {
-                OK_HTTP_CLIENT = new OkHttpClient.Builder()
+                OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                        .readTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
                         .connectTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
-                        .addInterceptor(Repository.getInterceptor())
+                        .writeTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS);
+                // 加入Application中定义的拦截器
+                for (Interceptor interceptor : Repository.getInterceptors()) {
+                    builder.addInterceptor(interceptor);
+                }
+                OK_HTTP_CLIENT = builder
                         .build();
             }
             return OK_HTTP_CLIENT;
@@ -78,20 +70,11 @@ public final class RestApiHolder {
     private static final class RestServiceHolder{
         private static RestService REST_SERVICE;
 
-        private static RestCityService CITY_REST_SERVICE;
-
         private synchronized static RestService getRestService() {
             if (REST_SERVICE == null) {
                 REST_SERVICE = RetrofitHolder.getRetrofitClient().create(RestService.class);
             }
             return REST_SERVICE;
-        }
-
-        private synchronized static RestCityService getCityRestService() {
-            if (CITY_REST_SERVICE == null) {
-                CITY_REST_SERVICE = RetrofitHolder.getCityRetrofitClient().create(RestCityService.class);
-            }
-            return CITY_REST_SERVICE;
         }
     }
 
@@ -101,15 +84,6 @@ public final class RestApiHolder {
     public static RestService getRestService() {
 
         return RestServiceHolder.getRestService();
-
-    }
-
-    /**
-     * 获取RestService实例
-     */
-    public static RestCityService getCityRestService() {
-
-        return RestServiceHolder.getCityRestService();
 
     }
 }

@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import com.delia.core.CoreApplication;
 import com.delia.core.handler.AppCrashHandler;
-import com.delia.core.util.LogUtil;
+import com.delia.core.utils.LogUtil;
 
 /**
  * 用于测试的Application
@@ -20,9 +20,8 @@ public class MyApplication extends CoreApplication {
         super.onCreate();
         setTimeout(10);
         // 可以在此处添加未知异常捕获的处理方法
-        AppCrashHandler.getInstance().addOnAppCrashListener((t, e) -> {
-            LogUtil.getInstance().v(Environment.getDataDirectory().getAbsolutePath());
-        });
+        AppCrashHandler.getInstance().addOnAppCrashListener((t, e) ->
+                LogUtil.getInstance().v(Environment.getDataDirectory().getAbsolutePath()));
     }
 
     @Override

@@ -30,7 +30,7 @@ public abstract class CoreApplication extends Application {
         AppCrashHandler.getInstance().init();
         application = createApplication();
         BASE_URL = createBaseUrl();
-        setTimeout(30);
+        setTimeout(10);
         Utils.init(this);
     }
 

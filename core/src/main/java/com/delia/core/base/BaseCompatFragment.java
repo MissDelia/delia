@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.blankj.utilcode.util.ConvertUtils;
 import com.delia.core.R;
-import com.delia.core.util.ToastUtil;
+import com.delia.core.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -42,16 +42,6 @@ public abstract class BaseCompatFragment extends Fragment {
      * 默认的startActivityForResult的requestCode
      */
     protected static final int DEFAULT_REQUEST_CODE = -0x00000001;
-
-    /**
-     * 默认的onActivityResult常量，表示成功返回数据
-     */
-    protected static final int RESPONSE_SUCCESS = 0x00000100;
-
-    /**
-     * 默认的onActivityResult常量，表示无返回数据或返回数据存在问题
-     */
-    protected static final int RESPONSE_FAULT = 0x00000200;
 
     /**
      * 默认无效的flag
@@ -175,7 +165,7 @@ public abstract class BaseCompatFragment extends Fragment {
     protected View getBarCenterView() {
         TextView tvTitle = new TextView(getActivity());
         tvTitle.setText(getString(R.string.title_bar_default_str));
-        tvTitle.setTextSize(19);
+        tvTitle.setTextSize(ConvertUtils.px2sp(getResources().getDimension(R.dimen.dimen_19sp)));
         tvTitle.setTextColor(getResources().getColor(R.color.default_black));
         return tvTitle;
     }
@@ -186,15 +176,15 @@ public abstract class BaseCompatFragment extends Fragment {
         layout.setGravity(Gravity.CENTER);
         ViewGroup.LayoutParams layoutParams
                 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.height = ConvertUtils.dp2px(48);
-        layoutParams.width = ConvertUtils.dp2px(48);
+        layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_48dp);
+        layoutParams.width = (int) getResources().getDimension(R.dimen.dimen_48dp);
         layout.setLayoutParams(layoutParams);
 
         ImageView iv = new ImageView(getActivity());
         ViewGroup.LayoutParams ivLayoutParams
                 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ivLayoutParams.height = ConvertUtils.dp2px(24);
-        ivLayoutParams.width = ConvertUtils.dp2px(24);
+        ivLayoutParams.height = (int) getResources().getDimension(R.dimen.dimen_24dp);
+        ivLayoutParams.width = (int) getResources().getDimension(R.dimen.dimen_24dp);
         iv.setLayoutParams(ivLayoutParams);
         iv.setImageResource(R.drawable.more);
 

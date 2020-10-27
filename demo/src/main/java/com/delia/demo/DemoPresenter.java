@@ -28,11 +28,7 @@ public class DemoPresenter extends BasePresenter<IDemoView> {
                 , map, new OnRequestCompleteListener<Response<?>>() {
             @Override
             public void onComplete(Response<?> response) {
-                if (response.getCode() == 200) {
-                    getView().isRequestSuccess(true);
-                } else {
-                    getView().isRequestSuccess(false);
-                }
+                getView().isRequestSuccess(response.getCode() == 200);
             }
 
             @Override

@@ -8,6 +8,9 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.blankj.utilcode.util.ConvertUtils;
+import com.delia.core.R;
+
 /**
  * Created by x5035 on 2018/3/18.
  */
@@ -40,5 +43,6 @@ public class ToastTextView extends AppCompatTextView {
         this.setBackground(drawable);
         this.setPadding(15, 15, 15, 15);
         this.setTextColor(-1);
+        this.setTextSize(ConvertUtils.px2sp(getResources().getDimension(R.dimen.dimen_15sp)));
     }
 }

@@ -10,7 +10,7 @@ import android.os.Bundle;
  * @author xiong'MissDelia'zhengkun
  * 2020年7月16日15:32:45
  */
-public abstract class BaseViewActivity<V extends BaseView, P extends BasePresenter<V>>
+public abstract class BaseViewActivity<V extends BaseView, P extends  BasePresenter<V>>
         extends BaseCompatActivity {
 
     private P presenter;

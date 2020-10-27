@@ -7,7 +7,7 @@ import android.os.Process;
 
 import com.delia.core.BuildConfig;
 import com.delia.core.handler.callback.OnAppCrashListener;
-import com.delia.core.util.LogUtil;
+import com.delia.core.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -21,10 +21,10 @@ public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
 
     private static final String TAG = AppCrashHandler.class.getSimpleName();
 
-    private static AppCrashHandler sInstance = new AppCrashHandler();
+    private static final AppCrashHandler sInstance = new AppCrashHandler();
     private Thread.UncaughtExceptionHandler mDefaultCrashHandler;
     private ArrayList<OnAppCrashListener> mListenerArray;
-    private boolean shutdown = !BuildConfig.DEBUG;
+    private final boolean shutdown = !BuildConfig.DEBUG;
 
     private AppCrashHandler() {
     }

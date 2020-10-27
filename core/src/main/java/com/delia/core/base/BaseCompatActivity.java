@@ -5,6 +5,7 @@ package com.delia.core.base;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -21,9 +22,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.ConvertUtils;
 import com.delia.core.R;
-import com.delia.core.util.ToastUtil;
+import com.delia.core.utils.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -41,16 +43,6 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
      * 默认的startActivityForResult的requestCode
      */
     protected static final int DEFAULT_REQUEST_CODE = -0x00000001;
-
-    /**
-     * 默认的onActivityResult常量，表示成功返回数据
-     */
-    protected static final int RESPONSE_SUCCESS = 0x00000100;
-
-    /**
-     * 默认的onActivityResult常量，表示无返回数据或返回数据存在问题
-     */
-    protected static final int RESPONSE_FAULT = 0x00000200;
 
     /**
      * 默认无效的flag
@@ -74,6 +66,7 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         mDisposable = new CompositeDisposable();
         initView();
         loadData();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
@@ -122,9 +115,7 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
                 if (getIconBackId() != -1) {
                     ivBack.setImageResource(getIconBackId());
                 }
-                btnBack.setOnClickListener(v -> {
-                    finish();
-                });
+                btnBack.setOnClickListener(v -> finish());
                 btnBack.setVisibility(View.VISIBLE);
             }
             llBarTitle = findViewById(R.id.ll_bar_title);
@@ -151,7 +142,7 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
     protected View getBarCenterView() {
         TextView tvTitle = new TextView(this);
         tvTitle.setText(getString(R.string.title_bar_default_str));
-        tvTitle.setTextSize(19);
+        tvTitle.setTextSize(ConvertUtils.px2sp(getResources().getDimension(R.dimen.dimen_19sp)));
         tvTitle.setTextColor(getResources().getColor(R.color.default_black));
         return tvTitle;
     }
@@ -162,15 +153,15 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         layout.setGravity(Gravity.CENTER);
         ViewGroup.LayoutParams layoutParams
                 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.height = ConvertUtils.dp2px(48);
-        layoutParams.width = ConvertUtils.dp2px(48);
+        layoutParams.height = (int) getResources().getDimension(R.dimen.dimen_48dp);
+        layoutParams.width = (int) getResources().getDimension(R.dimen.dimen_48dp);
         layout.setLayoutParams(layoutParams);
 
         ImageView iv = new ImageView(this);
         ViewGroup.LayoutParams ivLayoutParams
                 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ivLayoutParams.height = ConvertUtils.dp2px(24);
-        ivLayoutParams.width = ConvertUtils.dp2px(24);
+        ivLayoutParams.height = (int) getResources().getDimension(R.dimen.dimen_24dp);
+        ivLayoutParams.width = (int) getResources().getDimension(R.dimen.dimen_24dp);
         iv.setLayoutParams(ivLayoutParams);
         iv.setImageResource(R.drawable.more);
 
@@ -204,6 +195,14 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
      * 沉浸式状态栏
      */
     protected void useImmersiveBar() {
+        BarUtils.transparentStatusBar(this);
+    }
+
+    /**
+     * 旧的沉浸式状态栏方法（已废弃）
+     */
+    @Deprecated
+    protected void useImmersiveBarOld() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             int flagTranslucentStatus = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
             int flagTranslucentNavigation = WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
@@ -216,6 +215,21 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
             } else {
                 attributes.flags |= flagTranslucentStatus | flagTranslucentNavigation;
                 window.setAttributes(attributes);
+            }
+        }
+    }
+
+    /**
+     * 设置根布局参数
+     */
+    @Deprecated
+    private void setRootView() {
+        ViewGroup parent = findViewById(android.R.id.content);
+        for (int i = 0, count = parent.getChildCount(); i < count; i++) {
+            View childView = parent.getChildAt(i);
+            if (childView instanceof ViewGroup) {
+                childView.setFitsSystemWindows(true);
+                ((ViewGroup) childView).setClipToPadding(true);
             }
         }
     }

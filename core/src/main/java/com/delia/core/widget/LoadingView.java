@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.delia.core.R;
-import com.delia.core.util.LogUtil;
 
 import java.util.LinkedList;
 
@@ -32,7 +31,7 @@ public class LoadingView extends View {
      */
     private int refreshTime = 100;
 
-    private LinkedList<Paint> paintsList = new LinkedList<>();
+    private final LinkedList<Paint> paintsList = new LinkedList<>();
 
     public LoadingView(Context context) {
         super(context);

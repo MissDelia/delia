@@ -3,8 +3,6 @@
  */
 package com.delia.core.net.callback;
 
-import com.delia.core.net.data.Response;
-
 /**
  * REST Api的回调类
  * @author xiong'MissDelia'zhengkun

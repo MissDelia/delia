@@ -10,10 +10,10 @@ import java.io.Serializable;
  * 2020年7月16日11:03:06
  * @author xiong'MissDelia'zhengkun
  * @param <T> 可以是{@link java.util.ArrayList}、{@link java.util.HashMap}
- *           或者其它继承{@link java.io.Serializable}接口的实体类
+ *           或者其它继承{@link Serializable}接口的实体类
  *           注意：这里暂时不允许使用SparseArray、ArrayMap，因其未实现序列化
  */
-public class Response<T extends Serializable> {
+public class Response<T extends Serializable> implements Serializable {
 
     private int code;
 

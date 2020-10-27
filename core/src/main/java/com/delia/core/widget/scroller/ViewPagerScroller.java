@@ -1,12 +1,12 @@
 package com.delia.core.widget.scroller;
 
+import java.lang.reflect.Field;
+
 import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
 import androidx.viewpager.widget.ViewPager;
-
-import java.lang.reflect.Field;
 
 /**
  * ViewPager 滚动速度设置
