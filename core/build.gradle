@@ -39,7 +39,8 @@ dependencies {
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
     api 'io.reactivex.rxjava3:rxjava:3.0.0'
     // GSON，不隐藏依赖
-    api 'com.google.code.gson:gson:2.8.6'
+    //noinspection GradleDependency
+    api 'com.google.code.gson:gson:2.8.5'
     // AOP埋点、热修复方案，不隐藏依赖
     api 'me.weishu:epic:0.6.0'
     // AndroidUtilCode工具大全，不隐藏依赖
