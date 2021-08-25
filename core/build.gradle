@@ -1,11 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.1"
+    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 19
+        //noinspection OldTargetApi
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -35,28 +37,21 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // RxJava3支持，不隐藏依赖，上层可调用
+    // RxJava3
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'
     api 'io.reactivex.rxjava3:rxjava:3.0.0'
-    // GSON，不隐藏依赖
-    //noinspection GradleDependency
-    api 'com.google.code.gson:gson:2.8.5'
-    // AOP埋点、热修复方案，不隐藏依赖
-    api 'me.weishu:epic:0.6.0'
-    // AndroidUtilCode工具大全，不隐藏依赖
-    api 'com.blankj:utilcodex:1.29.0'
-    api 'com.squareup.okhttp3:logging-interceptor:4.8.0'
-    // Glide图片框架，不隐藏依赖
+    // GSON
+    api 'com.google.code.gson:gson:2.8.8'
+    api 'com.blankj:utilcodex:1.30.6'
+    // Glide
     api 'com.github.bumptech.glide:glide:4.11.0'
-    // Zxing
-    api 'com.google.zxing:core:3.4.0'
-    api 'com.google.zxing:android-core:3.3.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    // Retrofit2/OkHttp日志拦截器，隐藏依赖
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    // 网络相关（Retrofit等）
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.okhttp3:logging-interceptor:4.8.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    // Room数据库依赖，暂时隐藏依赖
-    implementation 'androidx.room:room-runtime:2.2.5'
+    // 使用MMKV替代SharedPreference
+    implementation 'com.tencent:mmkv-static:1.2.8'
 }

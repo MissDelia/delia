@@ -3,11 +3,11 @@
  */
 package com.delia.demo;
 
-import com.delia.core.CoreApplication;
-import com.delia.core.base.BasePresenter;
-import com.delia.core.base.Repository;
-import com.delia.core.net.callback.OnRequestCompleteListener;
-import com.delia.core.net.data.Response;
+import cool.delia.core.CoreApplication;
+import cool.delia.core.base.BaseCorePresenter;
+import cool.delia.core.base.Repository;
+import cool.delia.core.net.callback.OnRequestCompleteListener;
+import cool.delia.core.net.data.Response;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @author xiong'MissDelia'zhengkun
  * 2020/7/17 15:55
  */
-public class DemoPresenter extends BasePresenter<IDemoView> {
+public class DemoPresenter extends BaseCorePresenter<IDemoView> {
 
     public void request() {
         Map<String, Object> map = new HashMap<>();

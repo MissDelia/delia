@@ -3,9 +3,9 @@ package com.jmx.standard;
 import android.app.Application;
 import android.os.Environment;
 
-import com.delia.core.CoreApplication;
-import com.delia.core.handler.AppCrashHandler;
-import com.delia.core.utils.LogUtil;
+import cool.delia.core.CoreApplication;
+import cool.delia.core.handler.AppCrashHandler;
+import cool.delia.core.utils.LogUtil;
 
 /**
  * 用于测试的Application

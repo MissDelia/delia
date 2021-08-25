@@ -3,7 +3,7 @@
  */
 package com.delia.demo;
 
-import com.delia.core.base.BaseView;
+import cool.delia.core.base.BaseView;
 
 /**
  * MVP使用教程

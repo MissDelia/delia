@@ -1,6 +1,6 @@
 package com.jmx.standard;
 
-import com.delia.core.base.BaseCompatActivity;
+import cool.delia.core.base.BaseCompatActivity;
 
 public class MainActivity extends BaseCompatActivity {
 
