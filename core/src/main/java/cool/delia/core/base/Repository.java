@@ -1,5 +1,5 @@
 /*
- * 2016-2020 ©MissDelia 版权所有
+ * 2016-2021 ©MissDelia 版权所有
  * "Anti 996" License Version 1.0
  */
 package cool.delia.core.base;
@@ -39,9 +39,11 @@ import retrofit2.Response;
 /**
  * 框架目前使用Retrofit和MMKV作为数据持久层
  * 除Application的子类和未实现MVP的视图外，不直接调用此类作为数据源，而是通过Presenter进行数据的增删改查和二次处理
+ * @deprecated 请使用RepositoryFactory获取数据模型的实例
  * @author xiong'MissDelia'zhengkun
  * 2020/7/17 13:49
  */
+@Deprecated
 public class Repository {
 
     private static final int MAX_BUFFER_SIZE = 4096;

@@ -1,5 +1,6 @@
 /*
- * 2016-2021 ©JMX Consumer Finance 版权所有
+ * 2016-2021 ©MissDelia 版权所有
+ * "Anti 996" License Version 1.0
  */
 package cool.delia.core.utils
 
@@ -14,6 +15,8 @@ import android.os.Build
 import android.text.TextUtils
 import androidx.annotation.RequiresPermission
 import cool.delia.core.CoreApplication
+import java.net.NetworkInterface
+import java.util.*
 
 
 /**
@@ -53,6 +56,30 @@ object WirelessUtil {
         val portStr = System.getProperty("http.proxyPort")
         val proxyPort = (portStr ?: "-1").toInt()
         return !TextUtils.isEmpty(proxyAddress) && proxyPort != -1
+    }
+
+    /**
+     * ## 判断当前是否处于VPN环境
+     * 常用于环境安全性判断场景
+     *
+     * 注意：此方法正在进行测试
+     * @return 返回当前是否处于VPN环境
+     */
+    fun isDeviceInVPN(): Boolean {
+        try {
+            // 获取网络接口列表
+            val all: List<NetworkInterface> = Collections.list(NetworkInterface.getNetworkInterfaces())
+            // 如果网络接口中有名字包含 ppp0 或 tun0 的，即代表当前正处于VPN环境
+            for (nif in all) {
+                val name = nif.name
+                if (name.equals("tun0") || name.equals("ppp0")) {
+                    return true
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     /**

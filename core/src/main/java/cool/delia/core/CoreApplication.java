@@ -1,5 +1,5 @@
 /*
- * 2016-2020 ©MissDelia 版权所有
+ * 2016-2021 ©MissDelia 版权所有
  * "Anti 996" License Version 1.0
  */
 package cool.delia.core;
@@ -39,7 +39,7 @@ public abstract class CoreApplication extends Application {
     public static String SHARED_TAG = "";
 
     /**
-     * 全局置灰配置，可手动配置后推送apk或通过网络配置
+     * 全局置灰配置，可手动配置后推送apk或通过网络配置<br>
      * 在特殊节日、纪念日或其它需要的日期时使用
      */
     public static boolean globalGrayMode = false;

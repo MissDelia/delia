@@ -1,5 +1,5 @@
 /*
- * 2016-2020 ©MissDelia 版权所有
+ * 2016-2021 ©MissDelia 版权所有
  * "Anti 996" License Version 1.0
  */
 package cool.delia.core.base;
@@ -50,7 +50,7 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
      * 对于定义的整形常量推荐使用十六进制
      * 默认的startActivityForResult的requestCode
      */
-    protected static final int DEFAULT_REQUEST_CODE = -0x00000001;
+    protected static final int DEFAULT_REQUEST_CODE = 0x00001000;
 
     /**
      * 默认的onActivityResult常量，表示成功返回数据
@@ -83,8 +83,10 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         if (getViewId() != -1) {
             setContentView(getViewId());
-            initView();
+        } else {
+            bindView();
         }
+        initView();
         mDisposable = new CompositeDisposable();
         loadData();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -284,6 +286,11 @@ public abstract class BaseCompatActivity extends AppCompatActivity {
      * 载入初始化数据
      */
     protected abstract void loadData();
+
+    /**
+     * 初始化页面及控件（使用ViewBinding时重写此方法）
+     */
+    protected void bindView() {}
 
     /**
      * 初始化页面及控件
