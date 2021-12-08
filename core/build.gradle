@@ -36,6 +36,16 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // Kotlin协程相关
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_version"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinx_version"
+
+    api fileTree(dir: "libs", include: [
+            "wheelview-4.1.0.aar",
+            "Android-PickerView-4.1.9.aar",
+            "utilcodex-1.29.0.aar"
+    ])
 
     // RxJava3
     api 'io.reactivex.rxjava3:rxandroid:3.0.0'

@@ -1,118 +1,139 @@
 /*
- * 2016-2021 ©MissDelia 版权所有
+ * 2016-2020 ©MissDelia 版权所有
  * "Anti 996" License Version 1.0
  */
-package cool.delia.core.net;
+package cool.delia.core.net
 
-import cool.delia.core.CoreApplication;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import cool.delia.core.CoreApplication
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * 使用单例模式持有Retrofit和RestService实例（运行时被动创建实例）
  * 2020年7月16日14:19:37
  * @author xiong'MissDelia'zhengkun
  */
-public final class RestApiHolder {
+object RestApiHolder {
+    /**
+     * 获取RestService实例
+     */
+    @JvmStatic
+    val restService: RestService
+        get() = RestServiceHolder.restService
 
-    private static final class RetrofitHolder {
+    /**
+     * 获取FileService实例
+     */
+    @JvmStatic
+    val fileService: FileService
+        get() = RestServiceHolder.fileService
 
-        private static Retrofit RETROFIT_CLIENT;
+    /**
+     * 获取CoroutineService实例
+     */
+    @JvmStatic
+    val coroutineService: CoroutineService
+        get() = RestServiceHolder.coroutineService
 
-        private static Retrofit DOWNLOAD_RETROFIT_CLIENT;
+    private object RetrofitHolder {
+        private var RETROFIT_CLIENT: Retrofit? = null
+        private var DOWNLOAD_RETROFIT_CLIENT: Retrofit? = null
 
-        private synchronized static Retrofit getRetrofitClient() {
-            if (RETROFIT_CLIENT == null) {
-                RETROFIT_CLIENT = new Retrofit.Builder()
+        @get:Synchronized
+        val retrofitClient: Retrofit
+            get() {
+                if (RETROFIT_CLIENT == null) {
+                    RETROFIT_CLIENT = Retrofit.Builder()
                         .baseUrl(CoreApplication.getBaseUrl())
-                        .client(OKHttpHolder.getOkHttpClient())
+                        .client(OKHttpHolder.okHttpClient)
                         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                         .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                        .build()
+                }
+                return RETROFIT_CLIENT as Retrofit
             }
-            return RETROFIT_CLIENT;
-        }
 
-        private synchronized static Retrofit getDownloadRetrofitClient() {
-            if (DOWNLOAD_RETROFIT_CLIENT == null) {
-                DOWNLOAD_RETROFIT_CLIENT = new Retrofit.Builder()
+        @get:Synchronized
+        val downloadRetrofitClient: Retrofit
+            get() {
+                if (DOWNLOAD_RETROFIT_CLIENT == null) {
+                    DOWNLOAD_RETROFIT_CLIENT = Retrofit.Builder()
                         .baseUrl(CoreApplication.getBaseUrl())
                         .callbackExecutor(Executors.newSingleThreadExecutor())
-                        .build();
+                        .build()
+                }
+                return DOWNLOAD_RETROFIT_CLIENT as Retrofit
             }
-            return DOWNLOAD_RETROFIT_CLIENT;
-        }
     }
 
     /**
      * 构建OKHttpClient
      */
-    private static final class OKHttpHolder{
+    private object OKHttpHolder {
+        private var OK_HTTP_CLIENT: OkHttpClient? = null
 
-        private static OkHttpClient OK_HTTP_CLIENT;
-
-        private synchronized static OkHttpClient getOkHttpClient() {
-            if (OK_HTTP_CLIENT == null) {
-                OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                        .readTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
-                        .connectTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS)
-                        .writeTimeout(CoreApplication.getTimeOut(), TimeUnit.SECONDS);
-                // 加入Application中定义的拦截器
-                for (Interceptor interceptor : CoreApplication.getInterceptors()) {
-                    builder.addInterceptor(interceptor);
+        // 加入Application中定义的拦截器
+        @get:Synchronized
+        val okHttpClient: OkHttpClient
+            get() {
+                if (OK_HTTP_CLIENT == null) {
+                    val builder = OkHttpClient.Builder()
+                        .readTimeout(CoreApplication.getTimeOut().toLong(), TimeUnit.SECONDS)
+                        .connectTimeout(CoreApplication.getTimeOut().toLong(), TimeUnit.SECONDS)
+                        .writeTimeout(CoreApplication.getTimeOut().toLong(), TimeUnit.SECONDS)
+                    // 加入Application中定义的拦截器
+                    for (interceptor in CoreApplication.getInterceptors()) {
+                        builder.addInterceptor(interceptor)
+                    }
+                    OK_HTTP_CLIENT = builder
+                        .build()
                 }
-                OK_HTTP_CLIENT = builder
-                        .build();
+                return OK_HTTP_CLIENT as OkHttpClient
             }
-            return OK_HTTP_CLIENT;
-        }
     }
-
 
     /**
      * 构建RestService
      */
+    private object RestServiceHolder {
+        private var REST_SERVICE: RestService? = null
+        private var FILE_SERVICE: FileService? = null
+        private var COROUTINE_SERVICE: CoroutineService? = null
 
-    private static final class RestServiceHolder {
-        private static RestService REST_SERVICE;
-
-        private static FileService FILE_SERVICE;
-
-        private synchronized static RestService getRestService() {
-            if (REST_SERVICE == null) {
-                REST_SERVICE = RetrofitHolder.getRetrofitClient().create(RestService.class);
+        @get:Synchronized
+        val restService: RestService
+            get() {
+                if (REST_SERVICE == null) {
+                    REST_SERVICE = RetrofitHolder.retrofitClient.create(
+                        RestService::class.java
+                    )
+                }
+                return REST_SERVICE as RestService
             }
-            return REST_SERVICE;
-        }
 
-        private synchronized static FileService getFileService() {
-            if (FILE_SERVICE == null) {
-                FILE_SERVICE = RetrofitHolder.getDownloadRetrofitClient().create(FileService.class);
+        @get:Synchronized
+        val fileService: FileService
+            get() {
+                if (FILE_SERVICE == null) {
+                    FILE_SERVICE = RetrofitHolder.downloadRetrofitClient.create(
+                        FileService::class.java
+                    )
+                }
+                return FILE_SERVICE as FileService
             }
-            return FILE_SERVICE;
-        }
-    }
 
-    /**
-     * 获取RestService实例
-     */
-    public static RestService getRestService() {
-
-        return RestServiceHolder.getRestService();
-    }
-
-    /**
-     * 获取FileService实例
-     */
-    public static FileService getFileService() {
-
-        return RestServiceHolder.getFileService();
+        val coroutineService: CoroutineService
+            get() {
+                if (COROUTINE_SERVICE == null) {
+                    COROUTINE_SERVICE = RetrofitHolder.retrofitClient.create(
+                        CoroutineService::class.java
+                    )
+                }
+                return COROUTINE_SERVICE as CoroutineService
+            }
     }
 }

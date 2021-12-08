@@ -16,6 +16,7 @@ import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
+ * 需要监控下载进度，使用这个Service
  * @author xiong'MissDelia'zhengkun
  * 2020/11/3 16:10
  */
